@@ -1,5 +1,6 @@
 package com.example.saif.saifproject.Service;
 
+import com.example.saif.saifproject.Entity.Entreprise;
 import com.example.saif.saifproject.Entity.Projet;
 import org.springframework.data.domain.Page;
 
@@ -21,4 +22,5 @@ public interface ProjetService {
 
     // Supprimer un projet
     void deleteProjet(Long id);
+    Page<Projet> searchProjetByTitre(String nom, int page, int size);
 }

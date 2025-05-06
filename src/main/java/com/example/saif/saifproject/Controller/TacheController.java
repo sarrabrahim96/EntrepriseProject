@@ -25,7 +25,7 @@ public class TacheController {
     @GetMapping
     public String listTaches(Model model) {
         model.addAttribute("taches", tacheService.getAllTaches(0, 20, "titre").getContent());
-        return "tache/list";
+        return "taches/list";
     }
 
     @GetMapping("/new")
@@ -33,7 +33,7 @@ public class TacheController {
         model.addAttribute("tache", new Tache());
         model.addAttribute("projets", projetService.getAllProjets(0, 100, "nom").getContent());
         model.addAttribute("employes", employeService.getAllEmployes(0, 100, "nom").getContent());
-        return "tache/form";
+        return "taches/form";
     }
 
     @PostMapping
@@ -48,7 +48,7 @@ public class TacheController {
         model.addAttribute("tache", tache);
         model.addAttribute("projets", projetService.getAllProjets(0, 100, "nom").getContent());
         model.addAttribute("employes", employeService.getAllEmployes(0, 100, "nom").getContent());
-        return "tache/form";
+        return "taches/form";
     }
 
     @GetMapping("/delete/{id}")

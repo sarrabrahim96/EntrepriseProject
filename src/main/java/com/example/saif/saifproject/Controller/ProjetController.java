@@ -1,10 +1,12 @@
 package com.example.saif.saifproject.Controller;
 
 
+import com.example.saif.saifproject.Entity.Entreprise;
 import com.example.saif.saifproject.Entity.Projet;
 import com.example.saif.saifproject.Service.EntrepriseService;
 import com.example.saif.saifproject.Service.ProjetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,23 @@ public class ProjetController {
     private EntrepriseService entrepriseService;
 
     @GetMapping
-    public String listProjets(Model model) {
-        List<Projet> projets = projetService.getAllProjets(0, 10, "nom").getContent();
-        model.addAttribute("projets", projets);
+    public String listProjets(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "5") int size,
+                                  @RequestParam(required = false) String search,
+                                  Model model) {
+        Page<Projet> entreprisePage;
+
+        if (search != null && !search.trim().isEmpty()) {
+            entreprisePage = projetService.searchProjetByTitre(search, page, size);
+        } else {
+            entreprisePage = projetService.getAllProjets(page, size, "titre");
+        }
+
+        model.addAttribute("entreprisePage", entreprisePage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", entreprisePage.getTotalPages());
+        model.addAttribute("search", search);
+
         return "projet/list";
     }
 

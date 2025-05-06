@@ -2,6 +2,7 @@ package com.example.saif.saifproject.Controller;
 
 import com.example.saif.saifproject.Entity.Employe;
 import com.example.saif.saifproject.Service.EmployeService;
+import com.example.saif.saifproject.Service.EntrepriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ public class EmployeController {
 
     @Autowired
     private EmployeService employeService;
+    @Autowired
+    private EntrepriseService entrepriseService;
 
     @GetMapping
     public String listEmployes(Model model) {
@@ -23,12 +26,14 @@ public class EmployeController {
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("employe", new Employe());
+        model.addAttribute("entreprises", entrepriseService.getAllEntreprisesList());
         return "employe/form";
     }
 
     @PostMapping
     public String save(@ModelAttribute Employe employe) {
         employeService.saveEmploye(employe);
+
         return "redirect:/employes";
     }
 
@@ -36,6 +41,7 @@ public class EmployeController {
     public String edit(@PathVariable Long id, Model model) {
         Employe employe = employeService.getEmployeById(id).orElseThrow();
         model.addAttribute("employe", employe);
+        model.addAttribute("entreprises", entrepriseService.getAllEntreprisesList());
         return "employe/form";
     }
 
